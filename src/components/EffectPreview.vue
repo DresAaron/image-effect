@@ -19,7 +19,14 @@
         :duration="900"
         ref="imageMorphRef"
       />
-      <img v-else class="" :src="previewImage" alt="Processed Image" />
+      <img
+        v-else
+        class="effect-preview-img--simple"
+        :src="previewImage"
+        alt="Processed Image"
+        @mousedown="simplaCompare"
+        @mouseup="previewImage = afterImage"
+      />
       <div class="loading-overlay" v-if="loading">loading...</div>
     </div>
     <div class="effect-preview-actions">
@@ -33,13 +40,7 @@
             active: simpleCompareMode && previewImage === afterImage,
           }"
           icon="fa-solid fa-wand-magic-sparkles"
-          @mousedown="
-            () => {
-              previewImage = beforeImage
-              simpleCompareMode = true
-              sliderMode = false
-            }
-          "
+          @mousedown="simplaCompare"
           @mouseup="previewImage = afterImage"
         />
 
@@ -87,6 +88,12 @@ const previewImage = ref(props.beforeImage)
 
 const sliderMode = ref(false)
 const simpleCompareMode = ref(true)
+
+const simplaCompare = () => {
+  previewImage.value = props.beforeImage
+  simpleCompareMode.value = true
+  sliderMode.value = false
+}
 
 const tick = async (time: number = 1000) => {
   await new Promise((resolve) => {
@@ -149,6 +156,7 @@ watch(
     gap: 1rem;
     align-items: center;
     position: relative;
+    min-height: 600px;
 
     .image-morph {
       border-radius: 10px;
@@ -160,6 +168,10 @@ watch(
       height: auto;
       border-radius: 10px;
       object-fit: cover;
+    }
+
+    &--simple {
+      cursor: pointer;
     }
 
     .loading-overlay {
