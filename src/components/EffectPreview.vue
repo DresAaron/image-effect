@@ -27,11 +27,15 @@
         @mousedown="simplaCompare"
         @mouseup="previewImage = afterImage"
       />
-      <div class="loading-overlay" v-if="loading">loading...</div>
+      <div class="loading-overlay" v-if="loading">AI Processing...</div>
     </div>
     <div class="effect-preview-actions">
       <div class="effect-preview-actions--left">
         <span class="effect-label">Effect: </span>{{ effect || 'Please select an effect...' }}
+        <div>
+          <span class="effect-label">Image source: </span
+          >{{ previewImage === beforeImage ? 'Original Image' : 'AI Processed Image' }}
+        </div>
       </div>
       <div class="effect-preview-actions--right">
         <font-awesome-icon
@@ -195,7 +199,6 @@ watch(
     padding: 1rem 0;
     display: flex;
     justify-content: space-between;
-    align-items: center;
 
     .icon-btn {
       cursor: pointer;
